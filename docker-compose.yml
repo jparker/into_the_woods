@@ -1,0 +1,15 @@
+---
+version: "3"
+services:
+  db:
+    container_name: into_the_woods-postgres
+    environment:
+      POSTGRES_USER: into_the_woods
+      POSTGRES_PASSWORD: awooga
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    user: "1000"
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+      - /etc/passwd:/etc/passwd:ro
