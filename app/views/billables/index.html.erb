@@ -1,0 +1,51 @@
+<div class="my-3">
+  <%= form_with url: billables_path, method: :get, class: 'row row-cols-lg-auto g-3 align-items-center' do |f| %>
+    <div class="col-12">
+      <%= f.label :q, 'Query', class: 'visually-hidden' %>
+      <div class="input-group">
+        <%= f.search_field :q, class: 'form-control', value: query %>
+        <%= f.button :submit, class: 'btn btn-primary', placeholder: 'Search', tabindex: 100 do %>
+          Search
+        <% end %>
+      </div>
+    </div>
+    <div class="col-12">
+      <%= link_to 'Reset Search', { q: nil }, class: ['btn btn-secondary', { disabled: query.nil? }] %>
+    </div>
+  <% end %>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Client</th>
+        <th>Vendor</th>
+        <th class="text-end">Gross</th>
+        <th class="text-end">Commission</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @billables %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4">
+          Totals
+        </td>
+        <td class="gross_rate text-end">
+          <%= number_to_currency @search.sum(:gross_rate) %>
+        </td>
+        <td class="commission text-end">
+          <%= number_to_currency @search.sum(:commission) %>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<% if @pagy.pages > 1 || @pagy.page > 1 %>
+  <%== pagy_bootstrap_nav @pagy %>
+<% end %>

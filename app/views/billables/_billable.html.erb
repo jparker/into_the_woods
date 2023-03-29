@@ -1,0 +1,20 @@
+<tr class="<%= dom_class(billable) %>">
+  <td>
+    <%= billable.id %>
+  </td>
+  <td>
+    <%= time_tag billable.booking.date, format: '%-m/%-d/%Y' %>
+  </td>
+  <td>
+    <%= truncate billable.booking.client.name %>
+  </td>
+  <td>
+    <%= truncate billable.booking.vendor.name %>
+  </td>
+  <td class="gross_rate text-end">
+    <%= number_to_currency billable.gross_rate %>
+  </td>
+  <td class="commission text-end">
+    <%= number_to_currency billable.commission %>
+  </td>
+</tr>

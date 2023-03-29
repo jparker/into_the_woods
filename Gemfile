@@ -46,7 +46,7 @@ group :development do
   gem "web-console"
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  # gem "rack-mini-profiler"
+  gem "rack-mini-profiler"
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
@@ -55,13 +55,19 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem "selenium-webdriver"
+  gem "selenium-webdriver", '~> 4.7.1'
   gem "webdrivers"
+end
+
+group :development do
+  gem 'stackprof'
 end
 
 group :test do
   gem "factory_bot_rails"
 end
+
 gem "dotenv-rails"
 gem "pagy"
 gem "pry-rails"
+gem 'search_lingo', '~> 3.0.0.pre1'
