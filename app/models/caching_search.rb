@@ -19,6 +19,7 @@ class CachingSearch
 
   def prepare
     execute "CREATE TEMP TABLE #{TEMP_TABLE_NAME} ON COMMIT DROP AS #{query.to_sql}"
+    execute "ANALYZE #{TEMP_TABLE_NAME}"
   end
 
   delegate :execute, to: :'search.connection'
