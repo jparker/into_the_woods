@@ -3,6 +3,14 @@
 class CachingSearch
   TEMP_TABLE_NAME = 'search'
 
+  def self.transaction(search)
+    search.transaction do
+      yield new(search).tap(&:prepare).then(&:relation)
+    end
+  end
+
+  private_class_method :new
+
   def initialize(search)
     @search = search
   end
@@ -10,7 +18,7 @@ class CachingSearch
   attr_reader :search
 
   def prepare
-    execute "CREATE TEMP TABLE #{TEMP_TABLE_NAME} AS #{query.to_sql}"
+    execute "CREATE TEMP TABLE #{TEMP_TABLE_NAME} ON COMMIT DROP AS #{query.to_sql}"
   end
 
   delegate :execute, to: :'search.connection'

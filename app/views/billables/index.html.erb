@@ -36,10 +36,10 @@
           Totals
         </td>
         <td class="gross_rate text-end">
-          <%= number_to_currency @cache.relation.sum(:gross_rate) %>
+          <%= number_to_currency @relation.sum(:gross_rate) %>
         </td>
         <td class="commission text-end">
-          <%= number_to_currency @cache.relation.sum(:commission) %>
+          <%= number_to_currency @relation.sum(:commission) %>
         </td>
       </tr>
     </tfoot>
