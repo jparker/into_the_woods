@@ -3,13 +3,7 @@
 require "test_helper"
 
 class BillablesTest < ActionDispatch::IntegrationTest
-  self.use_transactional_tests = false
-
-  teardown do
-    [Client, Vendor, Receipt].each do |cls|
-      cls.connection.execute "TRUNCATE #{cls.table_name} CASCADE"
-    end
-  end
+  include NonTransactional
 
   test 'list billables' do
     client = create :client, name: 'Peter Parker'

@@ -3,6 +3,8 @@
 require 'application_system_test_case'
 
 class BillablesTest < ApplicationSystemTestCase
+  include NonTransactional
+
   test 'list billables' do
     pete, tony =
       create(:client, name: 'Peter Parker'),
