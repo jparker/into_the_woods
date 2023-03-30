@@ -74,4 +74,21 @@ class BillablesTest < ActionDispatch::IntegrationTest
       assert_text '$100.00'
     end
   end
+
+  test 'search billables deduplicates results' do
+    billable = create :billable, gross_rate: 1_000.0, commission_rate: 0.1
+    receipts = create_pair :receipt, date: Date.new(2023, 3, 29)
+    receipts.each do |receipt|
+      create :receivable, billable:, receipt:, gross_rate: 500.0
+    end
+
+    get billables_path(q: 'receipt: 3/29/23')
+
+    assert_response :success
+    assert_select '.billable', count: 1
+    assert_select 'tfoot' do
+      assert_text '$1,000.00'
+      assert_text '$100.00'
+    end
+  end
 end
