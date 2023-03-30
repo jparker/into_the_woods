@@ -2,7 +2,7 @@
 
 class BillablesController < ApplicationController
   def index
-    @search = Billable.search query
+    @search = Billable.where id: Billable.search(query)
     @pagy, @billables = pagy @search.includes(booking: %i[client vendor]).sorted
   end
 
