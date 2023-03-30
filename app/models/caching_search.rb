@@ -14,6 +14,7 @@ class CachingSearch
   end
 
   delegate :execute, to: :'search.connection'
+  delegate :arel_table, to: :search
 
   def relation
     search.unscoped.joins("INNER JOIN #{TEMP_TABLE_NAME} USING (id)").order temp_table[:sort_key]
@@ -22,7 +23,10 @@ class CachingSearch
   private
 
   def query
-    search.select :id, rank.as('sort_key')
+    # search.unscope(:order).distinct.select :id, rank.as('sort_key')
+    search.unscope(:order).select(:id, rank.as('sort_key')).arel.then do |arel|
+      arel.distinct_on arel_table[:id]
+    end
   end
 
   def rank
@@ -34,7 +38,7 @@ class CachingSearch
   end
 
   def order_values
-    search.order_values.presence || search.arel_table[:id].asc
+    search.order_values.presence || arel_table[:id].asc
   end
 
   def temp_table
