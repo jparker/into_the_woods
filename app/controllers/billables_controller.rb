@@ -2,8 +2,9 @@
 
 class BillablesController < ApplicationController
   def index
-    @search = Billable.search query
-    @pagy, @billables = pagy @search.includes(booking: %i[client vendor]).sorted
+    @cache = CachingSearch.new Billable.search(query).sorted
+    @cache.prepare
+    @pagy, @billables = pagy @cache.relation.includes(booking: %i[client vendor])
   end
 
   private
