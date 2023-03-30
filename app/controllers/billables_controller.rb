@@ -5,6 +5,7 @@ class BillablesController < ApplicationController
     CachingSearch.transaction Billable.search(query).sorted do |relation|
       @relation = relation
       @pagy, @billables = pagy @relation.includes(booking: %i[client vendor])
+      @billables.load
     end
   end
 
