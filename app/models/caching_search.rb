@@ -19,6 +19,7 @@ class CachingSearch
 
   def prepare
     execute "CREATE TEMP TABLE #{TEMP_TABLE_NAME} ON COMMIT DROP AS #{query.to_sql}"
+    execute "CREATE INDEX idx_search_cache ON #{TEMP_TABLE_NAME}(sort_key)"
     execute "ANALYZE #{TEMP_TABLE_NAME}"
   end
 
